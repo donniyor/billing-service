@@ -1,0 +1,9 @@
+CREATE TABLE orders (
+ id BIGSERIAL PRIMARY KEY,
+ status SMALLINT NOT NULL,
+ total_amount BIGINT NOT NULL,
+ currency CHAR(3) NOT NULL DEFAULT 'USD',
+ comment TEXT,
+ created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+ updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);

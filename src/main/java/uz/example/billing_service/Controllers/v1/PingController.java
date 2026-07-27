@@ -1,4 +1,4 @@
-package uz.example.billing_service;
+package uz.example.billing_service.Controllers.v1;
 
 import java.time.LocalDateTime;
 
@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PingController {
 
-    public record PingResponse(String status, LocalDateTime serverTime) {}
+    private record PingResponse(String status, LocalDateTime serverTime) {}
 
-    @GetMapping("/ping")
+    @GetMapping("/v1/ping")
     public PingResponse ping()
     {
         return new PingResponse("ok", LocalDateTime.now());
