@@ -1,6 +1,6 @@
 Запуск проекта:
 
-БД
+БД:
 ```bash
 docker run --name billing-postgres \
   -e POSTGRES_PASSWORD=postgres \
@@ -12,4 +12,8 @@ docker run --name billing-postgres \
 Spring boot:
 ```bash
 ./mvnw spring-boot:run
+```
+
+```bash
+cp src/main/resources/application.properties.dist src/main/resources/application.properties
 ```

@@ -1,0 +1,10 @@
+#app
+spring.application.name=billing-service
+
+# db
+spring.datasource.url=jdbc:postgresql://localhost:5432/billing
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=true
