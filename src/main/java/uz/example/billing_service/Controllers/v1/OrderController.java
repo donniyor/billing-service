@@ -3,8 +3,11 @@ package uz.example.billing_service.Controllers.v1;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import uz.example.billing_service.DTO.OrderDTO;
+import uz.example.billing_service.DTO.OrderResponseDTO;
 import uz.example.billing_service.Service.OrderService;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 public class OrderController {
@@ -20,5 +23,11 @@ public class OrderController {
     public OrderSaveResponse save(@Valid @RequestBody OrderDTO dto)
     {
         return new OrderSaveResponse(service.createOrder(dto).getId());
+    }
+
+    @Valid
+    @GetMapping("/v1/orders/{id}")
+    public OrderResponseDTO getOrder(@Positive @PathVariable Long id) {
+        return service.getOrder(id);
     }
 }
