@@ -1,3 +1,20 @@
 package uz.example.billing_service.DTO;
 
-public record OrderDTO(Short status, Long totalAmount, String currency, String comment) {}
+import jakarta.validation.constraints.*;
+import uz.example.billing_service.Enums.OrderStatusEnum;
+
+public record OrderDTO(
+        @NotNull(message = "Status is required")
+        OrderStatusEnum status,
+
+        @NotNull(message = "Amount is required")
+        @Positive(message = "Amount should be positive")
+        Long totalAmount,
+
+        @NotBlank(message = "Currency is required")
+        String currency,
+
+        @Size(max = 500)
+        String comment
+) {
+}
