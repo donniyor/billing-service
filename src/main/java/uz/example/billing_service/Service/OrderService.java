@@ -1,23 +1,27 @@
 package uz.example.billing_service.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import uz.example.billing_service.DTO.CreateOrderDTO;
 import uz.example.billing_service.DTO.OrderDTO;
-import uz.example.billing_service.DTO.OrderResponseDTO;
 import uz.example.billing_service.Entities.Order;
 import uz.example.billing_service.Exceptions.OrderNotFoundException;
 import uz.example.billing_service.Exceptions.ServiceException;
 import uz.example.billing_service.Repository.OrdersRepository;
 
 @Service
-public class OrderService {
+public final class OrderService {
+    public static final int MAX_LIMIT = 500;
+
     private OrdersRepository repository;
 
     public OrderService(OrdersRepository repository) {
         this.repository = repository;
     }
 
-    public Order createOrder(OrderDTO dto) {
+    public Order createOrder(CreateOrderDTO dto) {
         Order order = new Order();
 
         order.setStatus(dto.status().getStatusCode());
@@ -28,7 +32,7 @@ public class OrderService {
         return repository.save(order);
     }
 
-    public OrderResponseDTO getOrder(Long id) {
+    public OrderDTO getOrder(Long id) {
         if (id <= 0) {
             throw ServiceException.negativeOrZeroValue();
         }
@@ -36,13 +40,20 @@ public class OrderService {
         Order order = repository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException(id));
 
-        return new OrderResponseDTO(
-                order.getId(),
-                order.getStatus(),
-                order.getTotalAmount(),
-                order.getCurrency(),
-                order.getComment(),
-                order.getCreatedAt(),
-                order.getUpdatedAt());
+        return OrderDTO.fromEnity(order);
+    }
+
+    public Page<OrderDTO> getOrders(int page, int size) {
+        if (size > 500) {
+            throw ServiceException.limitExceeded();
+        }
+
+        if (size <= 0 || page < 0) {
+            throw ServiceException.invalidPagination();
+        }
+
+        return repository
+            .findAll(PageRequest.of(page, size))
+            .map(OrderDTO::fromEnity);
     }
 }

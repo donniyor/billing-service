@@ -1,20 +1,28 @@
 package uz.example.billing_service.DTO;
 
-import jakarta.validation.constraints.*;
-import uz.example.billing_service.Enums.OrderStatusEnum;
+import java.time.Instant;
 
-public record OrderDTO(
-        @NotNull(message = "Status is required")
-        OrderStatusEnum status,
+import uz.example.billing_service.Entities.Order;
 
-        @NotNull(message = "Amount is required")
-        @Positive(message = "Amount should be positive")
+public final record OrderDTO(
+        Long id,
+        Short status,
         Long totalAmount,
-
-        @NotBlank(message = "Currency is required")
         String currency,
+        String comment,
+        Instant createdAt,
+        Instant updatedAt
+    ) {
 
-        @Size(max = 500)
-        String comment
-) {
+    public static OrderDTO fromEnity(Order entity) {
+        return new OrderDTO(
+                entity.getId(),
+                entity.getStatus(),
+                entity.getTotalAmount(),
+                entity.getCurrency(),
+                entity.getComment(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt()
+        );
+    }
 }
