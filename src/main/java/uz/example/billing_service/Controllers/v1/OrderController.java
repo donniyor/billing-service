@@ -22,8 +22,7 @@ public class OrderController {
         this.service = service;
     }
 
-    private record OrderSaveResponse(Long id) {
-    }
+    private record OrderSaveResponse(Long id) {}
 
     @PostMapping("/v1/orders/save")
     public OrderSaveResponse save(@Valid @RequestBody CreateOrderDTO dto) {

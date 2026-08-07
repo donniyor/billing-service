@@ -3,13 +3,14 @@ package uz.example.billing_service.Entities;
 import java.time.Instant;
 
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "orders")
-public final class Order {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,6 +31,7 @@ public final class Order {
     @Column(name = "created_at", insertable = false, updatable = false)
     private Instant createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Instant updatedAt;
 
