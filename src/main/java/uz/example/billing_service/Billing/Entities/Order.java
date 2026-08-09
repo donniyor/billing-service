@@ -32,7 +32,7 @@ public class Order {
     private Instant createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", insertable = false, updatable = false)
+    @Column(name = "updated_at", insertable = false)
     private Instant updatedAt;
 
     public Order() {}

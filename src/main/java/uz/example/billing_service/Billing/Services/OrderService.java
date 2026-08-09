@@ -38,7 +38,7 @@ public final class OrderService {
         }
 
         Order order = repository.findById(id)
-                .orElseThrow(() -> new OrderNotFoundException(id));
+            .orElseThrow(() -> new OrderNotFoundException(id));
 
         return OrderDTO.fromEnity(order);
     }

@@ -25,18 +25,18 @@ public class OrderController {
 
     private record OrderSaveResponse(Long id) {}
 
-    @PostMapping("/v1/orders/save")
+    @PostMapping("/api/v1/orders/save")
     public OrderSaveResponse save(@Valid @RequestBody CreateOrderDTO dto) {
         return new OrderSaveResponse(service.createOrder(dto).getId());
     }
 
     @Valid
-    @GetMapping("/v1/orders/{id}")
+    @GetMapping("/api/v1/orders/{id}")
     public OrderDTO getOrder(@Positive @PathVariable Long id) {
         return service.getOrder(id);
     }
 
-    @GetMapping("/v1/orders")
+    @GetMapping("/api/v1/orders")
     public Page<OrderDTO> getOrderList(
             @RequestParam(defaultValue = "0") @Min(0) int page,
             @RequestParam(defaultValue = "20") @Min(1) @Max(500) int size) {

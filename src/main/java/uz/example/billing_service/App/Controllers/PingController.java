@@ -1,4 +1,4 @@
-package uz.example.billing_service.Billing.Controllers.v1;
+package uz.example.billing_service.App.Controllers;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ public final class PingController {
 
     private record PingResponse(String status, LocalDateTime serverTime) {}
 
-    @GetMapping("/v1/ping")
+    @GetMapping("/api/v1/ping")
     public PingResponse ping()
     {
         return new PingResponse("ok", LocalDateTime.now());

@@ -18,4 +18,12 @@ public final class ServiceException extends RuntimeException {
     public static ServiceException invalidPagination() {
         return new ServiceException("Page must be >= 0 and size must be > 0");
     }
+
+    public static ServiceException notFoundById(String entity) {
+        return  new ServiceException(entity + " with same id is not found");
+    }
+
+    public static ServiceException entityNotFound(String entity) {
+        return new ServiceException(entity + " not found");
+    }
 }
