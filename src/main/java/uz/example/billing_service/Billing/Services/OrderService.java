@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import uz.example.billing_service.App.Constants.SystemApp;
 import uz.example.billing_service.App.Exceptions.ServiceException;
 import uz.example.billing_service.Billing.DTO.CreateOrderDTO;
 import uz.example.billing_service.Billing.DTO.OrderDTO;
@@ -13,7 +14,6 @@ import uz.example.billing_service.Billing.Repository.OrdersRepository;
 
 @Service
 public final class OrderService {
-    public static final int MAX_LIMIT = 500;
 
     private OrdersRepository repository;
 
@@ -44,7 +44,7 @@ public final class OrderService {
     }
 
     public Page<OrderDTO> getOrders(int page, int size) {
-        if (size > 500) {
+        if (size > SystemApp.MAX_LIMIT_SIZE) {
             throw ServiceException.limitExceeded();
         }
 

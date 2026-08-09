@@ -7,6 +7,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import uz.example.billing_service.App.Constants.System;
+import uz.example.billing_service.App.Constants.SystemApp;
 import uz.example.billing_service.App.Exceptions.ServiceException;
 import uz.example.billing_service.Products.DTO.CreateProductDTO;
 import uz.example.billing_service.Products.DTO.ProductDTO;
@@ -16,6 +18,7 @@ import uz.example.billing_service.Products.Repositories.ProductsRepository;
 
 @Service
 public class ProductsService {
+
     private final ProductsRepository repository;
 
     public ProductsService(ProductsRepository repository) {
@@ -42,13 +45,21 @@ public class ProductsService {
         return getProducts(page, size, false);
     }
 
-    public Page<ProductDTO> getProducts(int page, int size, boolean withDeleted) {
+    public Page<ProductDTO> getProducts(int page, int size, boolean withDeleted) throws ServiceException {
+        if (size > SystemApp.MAX_LIMIT_SIZE) {
+            throw ServiceException.limitExceeded();
+        }
+
+        if (size <= 0 || page < 0) {
+            throw ServiceException.invalidPagination();
+        }
+
         Page<Product> products = withDeleted
             ? repository.findAll(PageRequest.of(page, size))
             : repository.findAllByDeletedAtIsNull(PageRequest.of(page, size));
 
-            return products.map(ProductDTO::fromEntity);
-        }
+        return products.map(ProductDTO::fromEntity);
+    }
 
     public ProductDTO createProduct(CreateProductDTO dto) {
         Product product = new Product();
@@ -79,9 +90,7 @@ public class ProductsService {
             product.setPrice(dto.price());
         }
 
-        repository.save(product);
-
-        return ProductDTO.fromEntity(product);
+        return ProductDTO.fromEntity(repository.save(product));
     }
 
     @Transactional
