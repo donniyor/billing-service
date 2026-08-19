@@ -27,9 +27,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        String header = request.getHeader("Authoriaztion");
+        String header = request.getHeader("Authorization");
 
-        if (null == header || !header.startsWith("Barear ")) {
+        if (null == header || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
             return;
         }

@@ -2,7 +2,9 @@ package uz.example.billing_service.Products.Entities;
 
 import java.time.Instant;
 
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +30,7 @@ public class Product {
     private Long price;
 
     @Column(nullable = false, length = 3)
+    @JdbcTypeCode(SqlTypes.CHAR)
     private String currency;
 
     @Column(name = "created_at", insertable = false, updatable = false)
