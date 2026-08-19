@@ -2,7 +2,7 @@ INSERT INTO users (email, full_name, password_hash, role, enabled, email_verifie
 VALUES (
     'admin@example.uz',
     'Admin',
-    'AdminPassword',
+    '$2a$10$Vo3M0V25GIug9WfswYVpnOiqTtLQB5mMh2zzSeFKHdEz2MbWFN5oq', -- todo remove
     'ADMIN',
     TRUE,
     TRUE
