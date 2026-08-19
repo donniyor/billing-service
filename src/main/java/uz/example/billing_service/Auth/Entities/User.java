@@ -5,6 +5,7 @@ import java.time.Instant;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.*;
+import uz.example.billing_service.Auth.Enum.UserRole;
 
 @Entity
 @Table(name = "users")
@@ -27,6 +28,10 @@ public class User {
 
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 32)
+    private UserRole role;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private Instant createdAt;
@@ -65,6 +70,10 @@ public class User {
         return passwordHash;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -75,6 +84,10 @@ public class User {
 
     public Instant getDeletedAt() {
         return deletedAt;
+    }
+
+    public boolean isDeleted() {
+        return null != deletedAt;
     }
 
     public void setEmail(String email) {
@@ -95,6 +108,10 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public void setDeletedAt(Instant deletedAt) {

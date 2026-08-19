@@ -10,9 +10,11 @@ import uz.example.billing_service.Products.DTO.UpdateProductDTO;
 import uz.example.billing_service.Products.Services.ProductsService;
 
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@PreAuthorize("hasRole('ADMIN')")
 @Validated
 @RestController
 public class AdminProductsController {

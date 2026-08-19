@@ -13,6 +13,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import uz.example.billing_service.Auth.Config.JwtConfig;
 import uz.example.billing_service.Auth.Entities.User;
+import uz.example.billing_service.Auth.Enum.UserRole;
 
 @Service
 public class JwtService {
@@ -31,7 +32,7 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
 
         claims.put("email", user.getEmail());
-        claims.put("id", user.getId().toString());
+        claims.put("role", user.getRole().name());
 
         return Jwts.builder()
             .subject(user.getId().toString())
@@ -46,7 +47,15 @@ public class JwtService {
         return parseClaims(token).getExpiration();
     }
 
-    private  Claims parseClaims(String token) {
+    public String extractEmail(String token) {
+        return parseClaims(token).get("email", String.class); 
+    }
+
+    public UserRole extractRole(String token) {
+        return UserRole.fromString(parseClaims(token).get("role", String.class));
+    }
+
+    private Claims parseClaims(String token) {
         return Jwts.parser()
             .verifyWith(key)
             .build()

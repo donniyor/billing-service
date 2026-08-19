@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uz.example.billing_service.Auth.DTO.LoginDTO;
 import uz.example.billing_service.Auth.DTO.LoginResponseDTO;
 import uz.example.billing_service.Auth.Entities.User;
+import uz.example.billing_service.Auth.Enum.UserRole;
 import uz.example.billing_service.Auth.Exceptions.UserServiceException;
 import uz.example.billing_service.Billing.DTO.RegistrationDTO;
 import uz.example.billing_service.Billing.Repository.UserJpaRepository;
@@ -32,6 +33,7 @@ public class AuthService {
         user.setEmail(dto.email());
         user.setFullName(dto.firstName() + " " + dto.lastName());
         user.setPasswordHash(encoder.encode(dto.password()));
+        user.setRole(UserRole.USER);
 
         return repository.save(user);
     }
@@ -41,6 +43,10 @@ public class AuthService {
             .orElseThrow(() -> UserServiceException.invalideEmailOrPassword());
 
         if (!encoder.matches(dto.password(), user.getPasswordHash())) {
+            throw UserServiceException.invalideEmailOrPassword();
+        }
+
+        if (user.isDeleted()) {
             throw UserServiceException.invalideEmailOrPassword();
         }
 

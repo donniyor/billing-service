@@ -21,6 +21,6 @@ public enum OrderStatusEnum {
             if (s.code == code) return s;
         }
 
-        throw new IllegalArgumentException("Неизвестный статус: " + code);
+        throw new IllegalArgumentException("Undefited status: " + code);
     }
 }

@@ -21,6 +21,10 @@ public class UserDetailService implements UserDetailsService {
         User user = repository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("Useer not found"));
 
+        if (user.isDeleted()) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
         return org.springframework.security.core.userdetails.User
             .withUsername(user.getEmail())
             .password(user.getPasswordHash())
